@@ -1,0 +1,81 @@
+Pig file
+Lines = LOAD 'hdfs:///user/sundar/episodeIV_dialouges.txt' USING PigStorage('\t') AS (line:chararray);
+create_rank = rank Lines;
+removeHeader = Filter create_rank by (rank_Lines > 1);
+New_input_file = foreach removeHeader Generate line;
+Words = FOREACH New_input_file GENERATE FLATTEN(TOKENIZE(line)) AS word;
+Groups = GROUP Words BY word;
+Counts = FOREACH Groups GENERATE group,COUNT(Words) AS nol;
+Results= ORDER Counts by nol DESC;
+STORE Results INTO 'hdfs:///user/sundar/resultssunprojact01_17' USING PigStorage('\t');
+
+
+pig output
+root@297c015a2f67:/# hdfs dfs -cat /user/sundar/resultssunprojact01_17/part-r-00000
+LUKE    253
+HAN     152
+THREEPIO        119
+BEN     76
+LEIA    57
+LEADER  50
+RED     49
+VADER   41
+VOICE   34
+BIGGS   34
+TROOPER 29
+TARKIN  28
+OWEN    25
+GOLD    23
+OFFICER 20
+INTERCOM        16
+WEDGE   14
+BERU    7
+STAR    7
+FIVE    7
+FIRST   7
+TEN     7
+DEATH   7
+BEN'S   6
+DODONNA 6
+AUNT    6
+JABBA   6
+GREEDO  6
+TAGGE   4
+SECOND  4
+MOTTI   4
+HUMAN   4
+MASSASSI        3
+BARTENDER       3
+CHIEF   3
+COMMANDER       3
+CAMIE   2
+FIXER   2
+IMPERIAL        2
+TWO     2
+WILLARD 2
+GANTRY  2
+TEN'S   1
+SEVEN   1
+REBEL   1
+PILOT   1
+ASTRO-OFFICER   1
+MAN'S   1
+LUKE'S  1
+HAN'S   1
+NINE'S  1
+CAPTAIN 1
+CONTROL 1
+PORKINS 1
+WINGMAN 1
+OVER    1
+NINE    1
+CREATURE        1
+LEADER'S        1
+DEAK    1
+CASS    1
+BASE    1
+WINGMAN'S       1
+TECHNICIAN      1
+WOMAN   1
+ELEVEN  1
+        0
